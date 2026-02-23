@@ -1,0 +1,84 @@
+<!doctype html>
+<html lang="ko">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Fiber Scheduler Simulator</title>
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body>
+    <main class="app">
+      <header class="hero">
+        <h1>React Fiber Scheduler Simulator</h1>
+        <p>
+          5ms 예산 기반 cooperative scheduling, 우선순위 처리, Render/Commit,
+          Double Buffering 스왑을 시각화합니다.
+        </p>
+      </header>
+
+      <section class="controls card">
+        <h2>Controls</h2>
+        <div class="buttons">
+          <button id="add-urgent">Add Urgent Task</button>
+          <button id="add-normal">Add Normal Task</button>
+          <button id="add-long">Add Long Task</button>
+          <button id="start">Start Scheduler</button>
+          <button id="stop">Stop Scheduler</button>
+          <button id="clear">Clear All</button>
+        </div>
+        <div class="mode-control">
+          <label for="mode">Comparison Mode</label>
+          <select id="mode">
+            <option value="fiber">Fiber (yield every 5ms)</option>
+            <option value="stack">Stack (blocking loop)</option>
+          </select>
+        </div>
+        <label class="toggle">
+          <input id="auto-inject" type="checkbox" />
+          <span>Auto Inject Tasks (every 600ms)</span>
+        </label>
+      </section>
+
+      <section class="grid">
+        <article class="card">
+          <h2>Runtime Stats</h2>
+          <dl class="stats" id="stats"></dl>
+          <div class="budget-wrap">
+            <div class="budget-label">Frame Budget (5ms)</div>
+            <div class="budget-bar">
+              <div id="budget-fill"></div>
+            </div>
+          </div>
+        </article>
+
+        <article class="card">
+          <h2>Queue</h2>
+          <ul id="queue" class="list"></ul>
+        </article>
+
+        <article class="card">
+          <h2>Phase Log</h2>
+          <ul id="log" class="list log"></ul>
+        </article>
+      </section>
+
+      <section class="grid trees">
+        <article class="card">
+          <h2>Current Tree</h2>
+          <pre id="current-tree" class="tree"></pre>
+        </article>
+        <article class="card">
+          <h2>WorkInProgress Tree</h2>
+          <pre id="wip-tree" class="tree"></pre>
+        </article>
+      </section>
+
+      <footer class="card footer-note">
+        <strong>API in use:</strong> MessageChannel, performance.now(),
+        requestAnimationFrame, requestIdleCallback
+      </footer>
+    </main>
+
+    <script src="app.js" defer></script>
+  </body>
+</html>
