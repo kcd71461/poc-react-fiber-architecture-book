@@ -1,0 +1,114 @@
+:root {
+  --nextra-primary-hue: 199deg;
+  --nextra-primary-saturation: 80%;
+}
+
+body {
+  background:
+    radial-gradient(circle at 12% 12%, rgba(251, 191, 36, 0.08), transparent 34%),
+    radial-gradient(circle at 84% 18%, rgba(14, 116, 144, 0.08), transparent 30%);
+}
+
+.rf-callout {
+  border: 1px solid rgba(14, 116, 144, 0.25);
+  border-radius: 12px;
+  padding: 12px;
+  margin: 16px 0;
+  background: rgba(224, 242, 254, 0.4);
+}
+
+.rf-small {
+  font-size: 0.9rem;
+  opacity: 0.9;
+}
+
+.rf-table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.rf-table th,
+.rf-table td {
+  border: 1px solid rgba(148, 163, 184, 0.4);
+  padding: 8px;
+  vertical-align: top;
+}
+
+.rf-bars {
+  display: grid;
+  gap: 8px;
+  margin: 12px 0;
+}
+
+.rf-bar-row {
+  display: grid;
+  grid-template-columns: 90px 1fr;
+  gap: 8px;
+  align-items: center;
+}
+
+.rf-bar {
+  height: 18px;
+  border-radius: 999px;
+  background: linear-gradient(90deg, #0f766e, #22c55e);
+}
+
+.rf-bar.stack {
+  background: linear-gradient(90deg, #b91c1c, #f97316);
+}
+
+.rf-inline-note {
+  display: inline-block;
+  position: relative;
+  margin-right: 0.3rem;
+}
+
+.rf-inline-note-trigger {
+  all: unset;
+  cursor: help;
+  display: inline-flex;
+  align-items: baseline;
+}
+
+.rf-inline-note-trigger:focus-visible {
+  outline: 2px solid #0e7490;
+  outline-offset: 2px;
+  border-radius: 4px;
+}
+
+.rf-inline-note-term {
+  border-bottom: 1px dashed rgba(14, 116, 144, 0.7);
+  font-weight: 600;
+}
+
+.rf-inline-note-mark {
+  margin-left: 2px;
+  color: #0e7490;
+  font-size: 0.7em;
+}
+
+.rf-inline-note-popup {
+  position: absolute;
+  left: 0;
+  top: calc(100% + 8px);
+  width: min(420px, 85vw);
+  background: #0f172a;
+  color: #f8fafc;
+  border-radius: 10px;
+  padding: 10px 12px;
+  line-height: 1.45;
+  font-size: 0.85rem;
+  box-shadow: 0 10px 26px rgba(2, 6, 23, 0.35);
+  opacity: 0;
+  visibility: hidden;
+  transform: translateY(-4px);
+  transition: all 120ms ease;
+  z-index: 40;
+}
+
+.rf-inline-note:hover .rf-inline-note-popup,
+.rf-inline-note:focus-within .rf-inline-note-popup {
+  opacity: 1;
+  visibility: visible;
+  transform: translateY(0);
+}

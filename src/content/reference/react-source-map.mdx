@@ -1,0 +1,47 @@
+---
+title: React 소스 매핑 부록
+---
+
+# React 소스 매핑 부록
+
+이 페이지는 본문 흐름을 끊지 않으면서도, 심화 독자가 바로 React 내부 구현으로 들어갈 수 있도록
+핵심 진입점을 정리한 부록입니다.
+
+> 기준 버전: `react@18.2.0`
+
+<SourceMapTable
+  entries={[
+    {
+      modulePath: "packages/react-reconciler/src/ReactFiberWorkLoop.new.js",
+      symbols: ["workLoop", "performConcurrentWorkOnRoot"],
+      whyItMatters: "중단 가능한 렌더링 루프의 제어 흐름을 이해하는 핵심 파일",
+      readHint: "언제 yield하고 언제 commit으로 넘어가는지 조건을 먼저 읽는다",
+    },
+    {
+      modulePath: "packages/react-reconciler/src/ReactFiberBeginWork.new.js",
+      symbols: ["beginWork"],
+      whyItMatters: "각 fiber 단위의 계산 시작 지점",
+      readHint: "타입별 분기 구조를 보고 비용이 커지는 경로를 파악한다",
+    },
+    {
+      modulePath: "packages/react-reconciler/src/ReactFiberCompleteWork.new.js",
+      symbols: ["completeWork"],
+      whyItMatters: "하위 작업을 마무리하며 상향 단계로 반환하는 지점",
+      readHint: "child/sibling/return 순회와 함께 읽어야 흐름이 잡힌다",
+    },
+    {
+      modulePath: "packages/scheduler/src/forks/Scheduler.js",
+      symbols: ["scheduleCallback", "shouldYieldToHost"],
+      whyItMatters: "React 작업과 브라우저 시간 분할의 기반",
+      readHint: "host callback이 어떤 타이밍으로 큐잉되는지 먼저 확인한다",
+    },
+  ]}
+/>
+
+## 추천 읽기 순서
+
+1. `ReactFiberWorkLoop.new.js`
+2. `ReactFiberBeginWork.new.js`
+3. `ReactFiberCompleteWork.new.js`
+4. `Scheduler.js`
+

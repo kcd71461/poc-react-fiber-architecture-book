@@ -1,0 +1,36 @@
+<!doctype html>
+<html lang="ko">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>React Fiber Architecture Ebook</title>
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body>
+    <div class="page">
+      <aside class="sidebar">
+        <h1>Fiber Ebook</h1>
+        <p class="subtitle">비유 → 개념 → 구현</p>
+        <nav id="toc" class="toc"></nav>
+        <a class="demo-link" href="../demo/">인터랙티브 데모 열기</a>
+      </aside>
+
+      <main class="content-wrap">
+        <header class="topbar">
+          <div>
+            <strong id="chapter-title">로딩 중...</strong>
+          </div>
+          <div class="actions">
+            <button id="prev-btn" type="button">이전</button>
+            <button id="next-btn" type="button">다음</button>
+          </div>
+        </header>
+        <article id="content" class="content"></article>
+      </main>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/mermaid/dist/mermaid.min.js"></script>
+    <script src="app.js" defer></script>
+  </body>
+</html>

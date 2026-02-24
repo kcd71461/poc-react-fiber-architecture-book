@@ -1,0 +1,4 @@
+interface:
+  display_name: "Review Feedback Apply"
+  short_description: "reviews 피드백을 반영하고 처리 완료 파일을 삭제"
+  default_prompt: "Use $review-feedback-apply to apply all reviews/*.md feedback to chapter content and delete only completed review files."

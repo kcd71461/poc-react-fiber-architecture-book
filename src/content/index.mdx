@@ -1,0 +1,28 @@
+---
+title: React Fiber Architecture Ebook
+---
+
+# React Fiber Architecture Ebook
+
+이 전자책은 **React Fiber 내부 설계**를 실무 개발자 관점에서 설명합니다.
+
+- 대상 독자: React 앱은 익숙하지만 Reconciler/Scheduler 내부는 깊게 이해하고 싶은 개발자
+- 학습 전략: **비유 → 개념 → 구현 → 실무 진단**
+- 이번 릴리스 범위: 01~03장 공개
+
+## 학습 순서
+
+1. [01. 왜 Fiber가 필요했나](/book/chapters/01-why-fiber)
+2. [02. 브라우저와 시간을 나누는 Scheduler](/book/chapters/02-browser-scheduler)
+3. [03. Fiber 노드와 포인터 순회](/book/chapters/03-fiber-node-structure)
+4. 용어 사전
+5. 브라우저 API 레퍼런스
+
+## 01~03장 리뷰 가이드
+
+아래 질문에 답할 수 있으면 현재 공개 범위의 학습 목표를 달성한 것입니다.
+
+- 왜 Stack Reconciler는 입력 지연을 만들기 쉬웠는가?
+- Scheduler는 어떤 기준으로 작업을 멈추고 재개하는가?
+- Fiber 포인터 구조(`child/sibling/return`)가 중단/재개에 왜 유리한가?
+- 이 모델을 실무에서 어떤 성능 판단(입력 지연, frame drop)으로 연결할 수 있는가?
