@@ -1,0 +1,4 @@
+interface:
+  display_name: "Gemini CLI Project Review"
+  short_description: "gemini-cli로 프로젝트 콘텐츠 자동 검수"
+  default_prompt: "Use $gemini-cli-project-review to review current project content with gemini-cli and save a markdown report under reviews/."
