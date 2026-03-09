@@ -183,11 +183,11 @@ function AnalyticsBoard({ rows }: { rows: Row[] }) {
 - [ ] Double Buffering에서 `current`/`workInProgress` 스왑 시점을 설명할 수 있다.
 - [ ] 실무 병목을 Render 문제와 Commit 문제로 분리 진단할 수 있다.
 
-## 다음 장 예고: Fiber 설계를 실무 최적화로 연결하기
+## 다음 장 예고: Reconciliation — Fiber의 비교 알고리즘
 
-다음 장에서는 지금까지의 내부 설계를 `useTransition`, `useDeferredValue`, `Suspense`,
-Profiler 해석 같은 실무 패턴으로 연결합니다.
+다음 장에서는 Render Phase 내부에서 일어나는 핵심 계산,
+즉 이전 트리와 새 트리를 비교해 최소한의 변경을 찾아내는 Reconciliation 알고리즘을 다룹니다.
 
-- 긴급 업데이트와 비긴급 업데이트 분리
-- 사용자 체감 지연을 줄이는 우선순위 전략
-- "느린 이유"를 코드 구조와 실행 단계로 설명하는 방법
+- 일반 트리 비교(O(n³))를 O(n)으로 줄이는 휴리스틱
+- `key`가 리스트 재조정 성능에 미치는 결정적 영향
+- Reconciliation 결과가 Commit Phase의 DOM 조작 비용에 미치는 영향
