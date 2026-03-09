@@ -277,20 +277,35 @@ Header hydration  Main hydration   Sidebar hydration
 - 이는 06장의 `markStarvedLanesAsExpired`와는 다른 메커니즘이지만, "우선순위를 동적으로 조정한다"는 같은 설계 철학을 따른다
 - Fiber의 우선순위 시스템이 렌더링뿐 아니라 hydration까지 확장된 구조다
 
+## 외부 라이브러리와 React 스케줄링
+
+실무에서는 차트 라이브러리(D3, Chart.js), 에디터(Monaco, CodeMirror), 지도(Mapbox) 등
+외부 라이브러리가 React 바깥에서 직접 DOM을 조작하는 경우가 많습니다.
+이때 React의 Fiber 스케줄링과 충돌이 발생할 수 있습니다.
+
+**주요 충돌 패턴:**
+- 외부 라이브러리가 `ref.current`를 통해 Commit Phase 완료 전에 DOM에 접근
+- 라이브러리의 자체 렌더링 루프와 React의 Render/Commit 타이밍 불일치
+- `useTransition`으로 낮춘 우선순위 업데이트가 외부 라이브러리의 동기 업데이트와 불일치
+
+**대응 전략:**
+1. **`useLayoutEffect`** 사용: Commit 직후, 브라우저 페인트 전에 외부 라이브러리를 동기화
+2. **`flushSync`** 활용: 외부 라이브러리와 동기화가 필요한 시점에 React 업데이트를 즉시 반영
+3. **Suspense boundary 분리**: 외부 라이브러리 영역을 별도 boundary로 격리해 React 렌더링과 독립적으로 관리
+
 ## 실습 예제 (코드리뷰형)
 
-### 시나리오
+### 실습 A: Profiler 기반 디버깅
+
+#### 시나리오
 
 전자상거래 페이지에서 상품 목록 로딩 시 전체 페이지가 빈 상태로 오래 머무는 문제가 있습니다.
 Profiler를 열어보니 Render Phase 30ms, Commit Phase 15ms로 둘 다 높습니다.
 
-이 훅들은 Suspense 없이 `useEffect` + `useState`로 구현되어 있으며,
-데이터가 로딩 중일 때 빈 배열을 렌더하는 대신 전체 컴포넌트가 빈 상태를 보여줍니다.
-
 ```tsx
 function ProductPage() {
-  const products = useFetchProducts(); // 렌더 시점에 데이터 요청, 전체 컴포넌트가 대기
-  const reviews = useFetchReviews();   // 렌더 시점에 데이터 요청, 매우 느림
+  const products = useFetchProducts(); // useEffect + useState 패턴
+  const reviews = useFetchReviews();   // useEffect + useState 패턴
 
   return (
     <div>
@@ -301,19 +316,35 @@ function ProductPage() {
 }
 ```
 
-### 질문
+#### 질문
 
-1. 이 코드의 성능 문제를 Fiber 관점에서 어떻게 진단하는가? (Render vs Commit 분리)
-2. Suspense를 적용해 어떤 구조로 개선할 수 있는가?
-3. Server Components를 도입하면 어떤 부분이 서버로 이동할 수 있는가?
-4. Streaming SSR을 적용하면 사용자 체감이 어떻게 달라지는가?
+1. Profiler에서 Render 30ms / Commit 15ms를 각각 어떻게 해석하는가?
+2. Render 병목과 Commit 병목의 해결 방향이 어떻게 다른가?
 
-### 답안 체크리스트
+#### 답안 체크리스트
 
 - [ ] Render 병목(30ms): 데이터 요청 대기와 컴포넌트 렌더가 같은 Phase에서 처리되는 문제를 지적했다.
 - [ ] Commit 병목(15ms): 대량의 상품 DOM 생성이 원인이므로 가상화나 페이지네이션을 제안했다.
+- [ ] Profiler Flamegraph에서 `actualDuration`이 높은 컴포넌트를 찾아 병목 지점을 특정할 수 있다고 설명했다.
+
+### 실습 B: Server Components + Streaming SSR 아키텍처 설계
+
+#### 시나리오
+
+실습 A의 `ProductPage`를 Next.js App Router 기반으로 개선하려 합니다.
+상품 데이터는 DB에서, 리뷰 데이터는 외부 API에서 가져오며, 리뷰 로딩이 특히 느립니다.
+
+#### 질문
+
+1. Suspense를 적용해 `ProductList`와 `ReviewSection`을 어떤 구조로 분리할 수 있는가?
+2. Server Components를 도입하면 어떤 부분이 서버로 이동할 수 있는가?
+3. Streaming SSR을 적용하면 사용자 체감이 어떻게 달라지는가?
+
+#### 답안 체크리스트
+
 - [ ] Suspense로 ProductList와 ReviewSection을 독립 boundary로 분리해 점진적 로딩을 구현할 수 있다고 설명했다.
 - [ ] Server Components로 데이터 의존 컴포넌트를 서버에서 렌더링해 번들 크기와 초기 로딩을 줄일 수 있다고 설명했다.
+- [ ] Streaming SSR로 느린 ReviewSection이 로딩되기 전에 ProductList를 먼저 보여줄 수 있다고 설명했다.
 
 ## Source Map
 

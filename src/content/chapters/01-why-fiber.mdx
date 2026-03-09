@@ -28,6 +28,11 @@ React 15 시절 렌더링 모델도 비슷했습니다.
 </InlineAnnotation>
 라고 부릅니다.
 
+> **용어 정리**: React 내부는 크게 세 부분으로 구성됩니다.
+> - **VDOM(Virtual DOM)**: 실제 DOM을 추상화한 가벼운 JavaScript 객체 트리로, 상태 변경 시 새 VDOM을 만들어 이전 VDOM과 비교합니다.
+> - **Reconciler**: VDOM 비교(재조정)를 수행해 "어떤 변경이 필요한지" 계산하는 엔진입니다. Stack Reconciler → Fiber Reconciler로 전환된 부분이 바로 여기입니다.
+> - **Renderer**: Reconciler가 계산한 변경을 실제 호스트 환경(브라우저 DOM, React Native 등)에 반영하는 계층입니다.
+
 - 렌더링이 시작되면 재귀 호출이 길게 이어짐
 - 사용자 입력보다 렌더링 계산이 먼저 CPU를 점유할 수 있음
 - 브라우저 입장에서는 "입력은 왔는데 반응이 늦는" 상태가 됨
@@ -89,6 +94,8 @@ React 16에서 Fiber는 "트리를 단번에 끝내는 방식" 대신
 > 설계 아이디어는 OS의 **cooperative multitasking**과 **algebraic effects**에서 영감을 받았습니다.
 
 ## 기술적 구현 (TypeScript 의사 코드)
+
+아래 코드는 설명용으로 단순화한 의사 코드(pseudo-code)입니다.
 
 ```ts
 // Stack Reconciler 스타일: 끝날 때까지 재귀적으로 진행
@@ -201,7 +208,7 @@ function SearchPage({ items }: { items: Item[] }) {
 
 2. **"Render가 길면 Commit도 길다"**
    - 반드시 그렇지 않다. Render 병목과 Commit 병목은 원인과 해결책이 다르다.
-   - Commit Phase 구조와 병목 포인트는 03장에서 상세히 다룬다.
+   - Commit Phase 구조와 병목 포인트는 04장에서 상세히 다룬다.
 
 3. **"이건 Concurrent Mode 쓸 때만 해당"**
    - 아니다. Fiber 구조 이해는 React 18 실무 최적화 전반(`memo`, `transition`, profiler 해석)에 직접 연결된다.

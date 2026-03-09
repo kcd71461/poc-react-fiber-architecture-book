@@ -96,6 +96,16 @@ function performUnitOfWork(fiber: FiberNode): FiberNode | null {
 - 루프를 멈출 때는 `nextUnitOfWork`만 보관하면 된다.
 - 재개 시에는 저장해 둔 Fiber에서 `performUnitOfWork`를 이어 호출하면 된다.
 
+## alternate와 Double Buffering 미리보기
+
+위 인터페이스에서 `alternate` 필드가 눈에 띌 것입니다.
+React는 화면에 보이는 트리(**current**)와 작업 중인 트리(**workInProgress**) 두 벌을 유지하며,
+이 둘을 `alternate` 포인터로 연결합니다.
+
+DevTools에서 같은 컴포넌트가 두 개의 Fiber로 표시되거나,
+디버깅 중 `fiber.alternate`를 찍었을 때 "이전 상태의 복사본"이 보이는 이유가 바로 이 구조 때문입니다.
+`alternate`가 왜 필요한지, 두 트리가 언제 교체(스왑)되는지는 04장 Double Buffering에서 상세히 다룹니다.
+
 ## 포인터 시각화
 
 ```mermaid
