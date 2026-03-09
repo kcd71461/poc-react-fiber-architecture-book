@@ -1,5 +1,7 @@
 # React Fiber Architecture Ebook
 
+[📖 **라이브 북 보기 (GitHub Pages)**](https://kcd71461.github.io/poc-react-fiber-architecture-book/)
+
 React Fiber 내부 설계를 설명하는 전자책 웹앱입니다.
 
 ## 현재 상태
